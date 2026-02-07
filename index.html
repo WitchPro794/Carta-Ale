@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>¿Quieres ser mi San Valentín? 💘</title>
+
+  <style>
+    :root{
+      --bg1:#fff1f2; --bg2:#f5f3ff; --bg3:#eff6ff;
+      --card: rgba(255,255,255,.72);
+      --border: rgba(17,24,39,.10);
+      --text:#0f172a; --muted:#64748b;
+      --shadow: 0 24px 70px rgba(15,23,42,.12);
+      --radius: 24px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 20% 10%, var(--bg2), transparent 60%),
+        radial-gradient(900px 500px at 80% 90%, var(--bg1), transparent 60%),
+        radial-gradient(900px 500px at 50% 60%, var(--bg3), transparent 60%),
+        #ffffff;
+      overflow-x:hidden;
+    }
+
+    /* Corazoncitos flotando */
+    .floating-hearts{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
+    .heart{
+      position:absolute; font-size:18px; opacity:.18; filter: blur(.2px);
+      animation: floatUp linear infinite; transform: translateY(110vh) scale(1);
+    }
+    @keyframes floatUp{
+      0%{ transform: translateY(110vh) translateX(0) scale(.9); opacity:0; }
+      10%{ opacity:.18; }
+      100%{ transform: translateY(-20vh) translateX(var(--drift)) scale(1.2); opacity:0; }
+    }
+
+    .wrap{
+      position:relative; z-index:1;
+      width:min(980px, 100%);
+      margin:0 auto;
+      padding:28px 18px 44px;
+      display:flex; flex-direction:column; gap:18px;
+    }
+
+    .hero{
+      padding:18px 20px;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.55));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .badge{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:8px 12px; border-radius:999px;
+      background:#0f172a; color:white; font-size:12px; letter-spacing:.2px;
+      width:fit-content;
+      animation: popIn .7s ease both;
+    }
+    @keyframes popIn{
+      from{ transform: translateY(6px) scale(.98); opacity:0; }
+      to{ transform: translateY(0) scale(1); opacity:1; }
+    }
+
+    .title{
+      margin:14px 0 6px;
+      font-size: clamp(28px, 3.4vw, 44px);
+      line-height:1.08;
+      letter-spacing:-.02em;
+      animation: slideIn .9s ease .1s both;
+    }
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      animation: slideIn .9s ease .18s both;
+    }
+    @keyframes slideIn{
+      from{ transform: translateY(14px); opacity:0; }
+      to{ transform: translateY(0); opacity:1; }
+    }
+
+    .sparkle{
+      position:absolute; inset:-60px;
+      background:
+        radial-gradient(circle at 15% 35%, rgba(236,72,153,.18) 0 9px, transparent 10px),
+        radial-gradient(circle at 85% 25%, rgba(99,102,241,.18) 0 11px, transparent 12px),
+        radial-gradient(circle at 72% 82%, rgba(236,72,153,.12) 0 15px, transparent 16px);
+      pointer-events:none;
+      animation: drift 10s ease-in-out infinite alternate;
+      z-index:0;
+    }
+    @keyframes drift{
+      from{ transform: translateY(0) translateX(0); }
+      to{ transform: translateY(10px) translateX(-6px); }
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap:18px;
+    }
+    @media (max-width: 860px){ .grid{ grid-template-columns: 1fr; } }
+
+    .card{
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .section-title{
+      display:flex; align-items:center; gap:10px;
+      margin:0 0 10px;
+      font-weight:800; letter-spacing:-.01em;
+    }
+    .section-title span{
+      display:inline-flex;
+      width:28px; height:28px;
+      border-radius:12px;
+      align-items:center; justify-content:center;
+      background: rgba(15,23,42,.06);
+    }
+
+    /* Carta */
+    .letter{ padding:18px 18px 12px; background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.60)); }
+    .paper{
+      border-radius:22px;
+      border:1px dashed rgba(15,23,42,.16);
+      padding:18px 16px;
+      background: rgba(255,255,255,.70);
+      position:relative;
+      overflow:hidden;
+      animation: paperFloat 6s ease-in-out infinite alternate;
+    }
+    @keyframes paperFloat{ from{ transform: translateY(0); } to{ transform: translateY(-6px); } }
+
+    .paper:before{
+      content:"";
+      position:absolute; inset:-80px;
+      background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,.55) 45%, transparent 55%);
+      transform: translateX(-60%);
+      animation: shine 4.8s ease-in-out infinite;
+      pointer-events:none; opacity:.45;
+    }
+    @keyframes shine{
+      0%{ transform: translateX(-60%); }
+      55%{ transform: translateX(60%); }
+      100%{ transform: translateX(60%); }
+    }
+
+    .paper p{
+      margin:0 0 12px;
+      line-height:1.75;
+      font-size:16px;
+      opacity:0;
+      transform: translateY(10px);
+      animation: reveal .7s ease forwards;
+    }
+    .paper p:nth-child(1){ animation-delay: .15s; }
+    .paper p:nth-child(2){ animation-delay: .30s; }
+    .paper p:nth-child(3){ animation-delay: .45s; }
+    .paper p:nth-child(4){ animation-delay: .60s; }
+    .paper p:nth-child(5){ animation-delay: .75s; }
+    @keyframes reveal{ to{ opacity:1; transform: translateY(0); } }
+
+    .sig{ margin-top:10px; font-weight:800; }
+    .muted{ color:var(--muted); font-size:12px; margin-top:10px; line-height:1.5; }
+
+    /* Countdown */
+    .countdown{ display:grid; gap:10px; }
+    .timer{ display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; }
+    .box{
+      border:1px solid rgba(15,23,42,.12);
+      border-radius:18px;
+      padding:12px 10px;
+      background: rgba(255,255,255,.60);
+      text-align:center;
+      position:relative; overflow:hidden;
+    }
+    .num{ font-size:28px; font-weight:900; letter-spacing:-.02em; }
+    .lbl{ font-size:12px; color:var(--muted); margin-top:3px; }
+    .tiny{ font-size:12px; color:var(--muted); line-height:1.5; }
+
+    /* Pregunta + botones */
+    .ask{ padding:18px; display:flex; flex-direction:column; gap:12px; }
+    .question{ margin:0; font-size: clamp(20px, 2.2vw, 28px); font-weight:900; letter-spacing:-.02em; }
+    .btnrow{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:2px; }
+
+    button{
+      border:none; border-radius:18px; padding:12px 16px;
+      font-weight:900; cursor:pointer;
+      transition: transform .18s ease, filter .18s ease, box-shadow .18s ease;
+      box-shadow: 0 10px 30px rgba(15,23,42,.12);
+      user-select:none;
+      max-width:100%;
+    }
+    button:active{ transform: translateY(1px) scale(.98) !important; }
+
+    .yes{ background: linear-gradient(135deg, #fb7185, #a78bfa); color:white; }
+    .no{
+      background: rgba(15,23,42,.06);
+      color:#0f172a;
+      border:1px solid rgba(15,23,42,.12);
+      box-shadow:none;
+      white-space: normal;
+    }
+    .no:hover{ filter: brightness(.98); }
+    .yes:hover{ filter: brightness(1.02); }
+
+    .hint{ margin:0; color:var(--muted); font-size:13px; line-height:1.5; }
+
+    /* Modal */
+    .overlay{
+      position:fixed; inset:0;
+      background: rgba(15,23,42,.55);
+      display:none; align-items:center; justify-content:center;
+      padding:20px; z-index:50;
+    }
+    .overlay.show{ display:flex; }
+
+    .modal{
+      width:min(560px, 100%);
+      border-radius:26px;
+      background: rgba(255,255,255,.88);
+      border:1px solid rgba(255,255,255,.35);
+      box-shadow: 0 28px 90px rgba(0,0,0,.24);
+      backdrop-filter: blur(10px);
+      padding:18px;
+      position:relative; overflow:hidden;
+      animation: modalIn .35s ease both;
+    }
+    @keyframes modalIn{
+      from{ transform: translateY(14px) scale(.98); opacity:0; }
+      to{ transform: translateY(0) scale(1); opacity:1; }
+    }
+    .modal h2{ margin:6px 0 6px; font-size:26px; letter-spacing:-.02em; }
+    .modal p{ margin:0 0 12px; color:var(--muted); line-height:1.6; }
+    .close{ background: rgba(15,23,42,.08); box-shadow:none; border:1px solid rgba(15,23,42,.12); }
+
+    /* Confetti */
+    .confetti{ position:fixed; inset:0; pointer-events:none; z-index:60; overflow:hidden; display:none; }
+    .confetti.show{ display:block; }
+    .conf{
+      position:absolute; width:10px; height:14px; border-radius:4px;
+      opacity:.9;
+      transform: translateY(-10vh) rotate(0deg);
+      animation: fall linear forwards;
+    }
+    @keyframes fall{
+      to{ transform: translateY(110vh) rotate(720deg); opacity:.95; }
+    }
+
+    .footer{ text-align:center; color:var(--muted); font-size:12px; margin-top:4px; }
+
+    /* ✅ Parche mobile recomendado */
+    @media (max-width: 480px){
+      .wrap{ padding: 18px 14px 34px; }
+      .paper p{ font-size: 16.5px; }
+      button{ padding: 14px 18px; border-radius: 20px; }
+      .timer{ grid-template-columns: repeat(2, 1fr); } /* contador 2x2 */
+      .num{ font-size: 30px; }
+    }
+
+    /* Extra: respeta "reducir movimiento" si el móvil lo tiene activado */
+    @media (prefers-reduced-motion: reduce){
+      .heart, .sparkle, .paper, .paper:before { animation: none !important; }
+      button{ transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="floating-hearts" id="hearts" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="sparkle" aria-hidden="true"></div>
+      <div style="position:relative; z-index:1;">
+        <div class="badge">💌 Carta de amor • 14/02/2026</div>
+        <h1 class="title">Para <span id="toName">Ale</span> 💘</h1>
+        <p class="subtitle">Hola mi amor, te quiero decir algo importante…</p>
+      </div>
+    </section>
+
+    <section class="grid">
+      <!-- Carta -->
+      <article class="card letter">
+        <h3 class="section-title"><span>✨</span> Desde el fondo de mi corazón: </h3>
+
+        <div class="paper">
+          <p>Hola <strong id="toName2">Mividaaaa</strong>,</p>
+
+          <p>
+            Nuestra relación ha tenido muchas altas y bajas como todos,
+            pero quiero que sepas que a tu lado me siento seguro y amado.
+          </p>
+
+          <p>
+            Me encanta todooo de ti, tu forma de ser y tu belleza me hace pensar que
+            estoy soñando. Cuando estoy contigo no me imoorta nada más que abrazarte
+            y besarte. Gracias por llegar a mi vida y hacerla más bonita.
+          </p>
+
+          <p>
+            Quiero que este 14 de febrero sea especial, pero sobre todo,
+            quiero compartirlo contigo… este y muchos más, de la forma más simple: juntos.
+          </p>
+
+          <p class="sig">
+            Con todo mi amor,<br>
+            <span id="fromName">Carlo</span>
+          </p>
+
+        </div>
+      </article>
+
+      <!-- Contador -->
+      <aside class="card">
+        <h3 class="section-title"><span>⏳</span> Cuenta regresiva</h3>
+
+        <div class="countdown">
+          <div class="timer" aria-live="polite">
+            <div class="box">
+              <div class="num" id="d">--</div>
+              <div class="lbl">Días</div>
+            </div>
+            <div class="box">
+              <div class="num" id="h">--</div>
+              <div class="lbl">Horas</div>
+            </div>
+            <div class="box">
+              <div class="num" id="m">--</div>
+              <div class="lbl">Min</div>
+            </div>
+            <div class="box">
+              <div class="num" id="s">--</div>
+              <div class="lbl">Seg</div>
+            </div>
+          </div>
+
+          <div class="tiny" id="countText">
+            Contando hacia el 14 de febrero de 2026 (hora de CDMX).
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Pregunta final -->
+    <section class="card ask">
+      <h2 class="question">¿Quieres ser mi san valentin? 💞</h2>
+      <p class="hint" id="hint">
+        Pista: El sí esta mas chido la vdd, lo recomiendo 🥺
+      </p>
+
+      <div class="btnrow">
+        <button class="yes" id="yesBtn" style="transform:scale(1)">Sí 💖</button>
+        <button class="no" id="noBtn" style="transform:scale(1)">No</button>
+      </div>
+    </section>
+
+    <div class="footer">Hecho con ❤️ por Carlos para Ale.</div>
+  </main>
+
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="badge">🎉 ¡SÍ!</div>
+      <h2 id="modalTitle">¡Ale, ya es oficial! 💘</h2>
+      <p id="modalText">
+        Gracias por decir que sí. Prometo hacerte sentir amadaaaaa,
+        cuidarte y darte muchos momentitos bonitos… 
+        Pd: Me acorde de lo que me dijiste el otro día así que
+        aparta el 14 en la noche que nos vamos a ver el lago 
+        de los cisneees... Te amooooo mi Calabazaaaa💞
+      </p>
+      <div class="btnrow"> 
+        <button class="close" id="closeBtn">Fin jijij</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /***********************
+     * Personalización por link:
+     * ?para=Nombre&de=TuNombre
+     ***********************/
+    const params = new URLSearchParams(location.search);
+    const para = params.get('para');
+    const de = params.get('de');
+
+    const toName = document.getElementById('toName');
+    const toName2 = document.getElementById('toName2');
+    const fromName = document.getElementById('fromName');
+
+    if (para) { toName.textContent = para; toName2.textContent = para; }
+    if (de) { fromName.textContent = de; }
+
+    /***********************
+     * Corazoncitos flotando (✅ más ligero para Android)
+     ***********************/
+    const heartsWrap = document.getElementById('hearts');
+    const heartChars = ["💗","💖","💘","💝","💞","💕","💜"];
+    const HEARTS = 14; // antes 22
+
+    function rand(min, max){ return Math.random()*(max-min)+min; }
+
+    for(let i=0;i<HEARTS;i++){
+      const el = document.createElement('div');
+      el.className = 'heart';
+      el.textContent = heartChars[Math.floor(Math.random()*heartChars.length)];
+      el.style.left = rand(0, 100) + 'vw';
+      el.style.animationDuration = rand(7, 15) + 's';
+      el.style.animationDelay = rand(0, 6) + 's';
+      el.style.setProperty('--drift', (rand(-16, 16)) + 'vw');
+      el.style.fontSize = rand(14, 28) + 'px';
+      heartsWrap.appendChild(el);
+    }
+
+    /***********************
+     * Countdown a 14-Feb-2026 00:00 CDMX
+     * (America/Mexico_City)
+     ***********************/
+    const TZ = 'America/Mexico_City';
+
+    function getTimeZoneOffsetMs(date, timeZone) {
+      const dtf = new Intl.DateTimeFormat('en-US', {
+        timeZone,
+        hour12: false,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      const parts = dtf.formatToParts(date);
+      const map = {};
+      for (const p of parts) if (p.type !== 'literal') map[p.type] = p.value;
+
+      const asUTC = Date.UTC(
+        Number(map.year),
+        Number(map.month) - 1,
+        Number(map.day),
+        Number(map.hour),
+        Number(map.minute),
+        Number(map.second)
+      );
+      return asUTC - date.getTime();
+    }
+
+    function makeZonedDate(year, month, day, hour, minute, second, timeZone) {
+      const utcGuess = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+      const offset1 = getTimeZoneOffsetMs(utcGuess, timeZone);
+      const d1 = new Date(utcGuess.getTime() - offset1);
+      const offset2 = getTimeZoneOffsetMs(d1, timeZone);
+      if (offset2 !== offset1) return new Date(utcGuess.getTime() - offset2);
+      return d1;
+    }
+
+    const target = makeZonedDate(2026, 2, 14, 0, 0, 0, TZ);
+
+    const dEl = document.getElementById('d');
+    const hEl = document.getElementById('h');
+    const mEl = document.getElementById('m');
+    const sEl = document.getElementById('s');
+    const countText = document.getElementById('countText');
+
+    function pad2(n){ return String(n).padStart(2,'0'); }
+
+    function tick(){
+      const now = new Date();
+      const diff = target.getTime() - now.getTime();
+
+      if (diff <= 0){
+        dEl.textContent = "00";
+        hEl.textContent = "00";
+        mEl.textContent = "00";
+        sEl.textContent = "00";
+        countText.textContent = "¡Llegó el 14 de febrero de 2026! 💘 (hora de CDMX)";
+        return;
+      }
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const mins = Math.floor((totalSeconds % 3600) / 60);
+      const secs = totalSeconds % 60;
+
+      dEl.textContent = String(days);
+      hEl.textContent = pad2(hours);
+      mEl.textContent = pad2(mins);
+      sEl.textContent = pad2(secs);
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    /***********************
+     * Botones Sí / No (dramático)
+     ***********************/
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const hint = document.getElementById('hint');
+
+    let yesScale = 1.0;
+    let noScale = 1.0;
+
+    const dramaticNo = [
+      "No",
+      "Andeleeeee",
+      "Piénsaloooooooo 🥺",
+      "Pishe viejaaa yaaaa💔",
+      "YAAAAAAAAA",
+      "Última oportunidad 😳",
+      "Woa lloraaaaar 😭",
+      "Ya casi no existe este botón…",
+    ];
+    let noClicks = 0;
+
+    function applyScales(){
+      yesBtn.style.transform = `scale(${yesScale})`;
+      noBtn.style.transform  = `scale(${noScale})`;
+    }
+
+    noBtn.addEventListener('click', () => {
+      noClicks++;
+      const idx = Math.min(noClicks, dramaticNo.length - 1);
+      noBtn.textContent = dramaticNo[idx];
+
+      yesScale = Math.min(2.2, yesScale + 0.12);
+      noScale  = Math.max(0.55, noScale - 0.10);
+      applyScales();
+
+      if (noClicks === 2) hint.textContent = "Ok solo te voy a rogar otras 50 veces más y ya 🥺";
+      if (noClicks === 5) hint.textContent = "Alejandraaaa yaaaaaaaaaa";
+      if (noClicks >= 8) hint.textContent = "Pishe viejaaaaa yaaaaaaaa💘";
+
+      if (noScale <= 0.56){
+        noBtn.disabled = true;
+        noBtn.style.opacity = .6;
+        noBtn.style.cursor = "not-allowed";
+        hint.textContent = "Nimodoooo miamor, esto necesitaba de medidas extremas, Eres MÍAA 😭";
+      }
+    });
+
+    /***********************
+     * Celebración al decir Sí
+     ***********************/
+    const overlay = document.getElementById('overlay');
+    const closeBtn = document.getElementById('closeBtn');
+    const confetti = document.getElementById('confetti');
+
+    function launchConfetti(){
+      confetti.innerHTML = "";
+      confetti.classList.add('show');
+
+      const pieces = 80; // ✅ más ligero (antes 120)
+      for(let i=0;i<pieces;i++){
+        const c = document.createElement('div');
+        c.className = "conf";
+        c.style.left = rand(0, 100) + "vw";
+        c.style.top = rand(-20, -5) + "vh";
+        c.style.animationDuration = rand(2.8, 5.2) + "s";
+        c.style.animationDelay = rand(0, 0.6) + "s";
+        c.style.background = `hsl(${Math.floor(rand(0,360))} 90% 70%)`;
+        confetti.appendChild(c);
+      }
+
+      setTimeout(() => confetti.classList.remove('show'), 5200);
+    }
+
+    function openModal(){
+      overlay.classList.add('show');
+      launchConfetti();
+    }
+    function closeModal(){ overlay.classList.remove('show'); }
+
+    yesBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+  </script>
+</body>
+</html>
